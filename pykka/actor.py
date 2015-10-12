@@ -327,6 +327,16 @@ class Actor(object):
         return attr
 
 
+class DeadMessageBox(object):
+    pass
+
+
+class DeadMessage(object):
+    def __init__(self, target, message):
+        self.target = target
+        self.message = message
+
+
 class ActorRef(object):
 
     """
@@ -381,7 +391,7 @@ class ActorRef(object):
         """
         return not self.actor_stopped.is_set()
 
-    def tell(self, message):
+    def tell(self, message, safe=False):
         """
         Send message to actor without waiting for any response.
 
@@ -395,7 +405,10 @@ class ActorRef(object):
         :return: nothing
         """
         if not self.is_alive():
-            raise ActorDeadError('%s not found' % self)
+            if safe:
+                ActorRegistry.broadcast(DeadMessage(self, message), DeadMessageBox)
+            else:
+                raise ActorDeadError('%s not found' % self)
         self.actor_inbox.put(message)
 
     def ask(self, message, block=True, timeout=None):

@@ -77,6 +77,11 @@ class RefTest(object):
         except ActorDeadError as exception:
             self.assertEqual('%s not found' % self.ref, str(exception))
 
+    def test_tell_safe_no_error_if_actor_is_stopped(self):
+        self.ref.stop()
+        self.ref.tell({'command': 'a custom message'}, True)
+        self.test_tell_fails_if_actor_is_stopped()
+
     def test_ask_blocks_until_response_arrives(self):
         result = self.ref.ask({'command': 'ping'})
         self.assertEqual('pong', result)
