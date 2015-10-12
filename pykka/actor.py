@@ -331,10 +331,18 @@ class DeadMessageBox(object):
     pass
 
 
-class DeadMessage(object):
+class DeadMessage(dict):
     def __init__(self, target, message):
-        self.target = target
-        self.message = message
+        self['target'] = target
+        self['message'] = message
+
+    @property
+    def target(self):
+        return self['target']
+
+    @property
+    def message(self):
+        return self['message']
 
 
 class ActorRef(object):
