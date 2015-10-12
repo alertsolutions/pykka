@@ -1,4 +1,4 @@
-from pykka.actor import Actor, ActorRef
+from pykka.actor import Actor, ActorRef, DeadMessageBox, DeadMessage
 from pykka.exceptions import ActorDeadError, Timeout
 from pykka.future import Future, get_all
 from pykka.proxy import ActorProxy
@@ -12,6 +12,8 @@ __all__ = [
     'ActorProxy',
     'ActorRef',
     'ActorRegistry',
+    'DeadMessage',
+    'DeadMessageBox',
     'Future',
     'ThreadingActor',
     'ThreadingFuture',
